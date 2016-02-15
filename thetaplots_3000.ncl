@@ -6,6 +6,7 @@ begin
 
 ; get list of files to read
 files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
 numfiles = dimsizes(files) ; number of files
 
 elev = 3000. ; altitude at which to plot plan views, in meters.
@@ -41,7 +42,7 @@ thetares@InitTime = False
 thetares@Footer = False
 thetares@cnFillPalette = theta_cmap
 thetares@cnLevelSelectionMode = "ExplicitLevels" ; set equally spaced contours
-thetares@cnLevels = ispan(298,312,2)
+thetares@cnLevels = ispan(308,314,1)
 ;thetares@cnFillColors = (/ 4,7,10,11,12,13,14,15,16,17 /)
 thetares@gsnSpreadColors = True
 thetares@gsnFrame = False
