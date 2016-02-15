@@ -6,6 +6,7 @@ begin
 
 ; get list of files to read
 files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
 numfiles = dimsizes(files) ; number of files
 
 elev = 2000. ; altitude at which to plot plan views, in meters.
@@ -41,10 +42,21 @@ thetares@InitTime = False
 thetares@Footer = False
 thetares@cnFillPalette = theta_cmap
 thetares@cnLevelSelectionMode = "ExplicitLevels" ; set equally spaced contours
-thetares@cnLevels = ispan(298,312,2)
+thetares@cnLevels = ispan(304,311,1)
 ;thetares@cnFillColors = (/ 4,7,10,11,12,13,14,15,16,17 /)
 thetares@gsnSpreadColors = True
 thetares@gsnFrame = False
+
+dbzres = True
+dbzres@ContourParameters = (/50,90,40/)
+dbzres@Footer = False
+dbzres@InitTime = False
+dbzres@cnInfoLabelOn = False
+dbzres@cnFillOn = False
+dbzres@cnLineLabelsOn = False
+dbzres@cnLineColor = "Black"
+dbzres@cnLineThicknessF = 3
+dbzres@gsnFrame = False
 
 polyres = True
 polyres@gsMarkerIndex = 16
@@ -81,14 +93,17 @@ do ifil=0,numfiles-1
    u_u = wrf_user_unstagger(u,u@stagger)
    v = wrf_user_getvar(a,"V",0)
    v_u = wrf_user_unstagger(v,v@stagger)
+   dbz = wrf_user_getvar(a,"REFL_10CM",0)
    theta_interp = wrf_user_intrp3d(theta,z,"h",elev,0.,False)
+   dbz_interp = wrf_user_intrp3d(dbz,z,"h",elev,0.,False)
    u10_interp = wrf_user_intrp3d(u_u,z,"h",elev,0.,False)
    v10_interp = wrf_user_intrp3d(v_u,z,"h",elev,0.,False)
    vector = wrf_vector(a,wks,u10_interp,v10_interp,vres)
    contour_theta = wrf_contour(a,wks,theta_interp,thetares)
+   contour_dbz   = wrf_contour(a,wks,dbz_interp,dbzres)
 ;   mpres@gsnFrame = False
 ;   map = wrf_map(wks,a,True)
-   final_map =  wrf_map_overlays(a,wks,(/contour_theta,vector/),thetares,mpres)
+   final_map =  wrf_map_overlays(a,wks,(/contour_theta,contour_dbz,vector/),thetares,mpres)
 ;   final_map = gsn_csm_vector_scalar_map_ce(wks,u10_interp,v10_interp,contour_theta,True)
 ;   dum1      = gsn_add_polymarker(wks,final_map,364,624,polyres) 
 ;   final_map = gsn_contour(wks, theta_interp, thetares)
