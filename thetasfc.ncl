@@ -14,11 +14,11 @@ y = 410
 
 ; Set start and end points for polyline here 
 
-;xsecnew
-x1lat0 = 39.5
-x1lon0 = -98.9
-x1lat1 = 38.25
-x1lon1 = -97.0
+;xsecback
+x1lat0 = 39.8
+x1lon0 = -99.4
+x1lat1 = 38.5
+x1lon1 = -97.3
 
 ; Set up some basic plot resources
 theta_cmap = read_colormap_file("NCV_jet")
@@ -57,7 +57,7 @@ do ifil=0,numfiles-1
    time = (filestr(22:23)+"_"+filestr(25:26))
    thetares@TimeLabel = date + " " + filestr(22:23) + ":" + filestr(25:26)
 
-   wks = gsn_open_wks(type, "theta_plansnew_"+"sfc"+"_d04_"+date+"_"+time)
+   wks = gsn_open_wks(type, "theta_plansback_"+"sfc"+"_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "theta_cont_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "test")
    a=addfile(files(ifil)+".nc","r") ; Open next file in sequence
