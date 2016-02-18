@@ -6,7 +6,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 begin
 
 ; get list of files to read
-files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*02_[0-2]*_00")
 numfiles = dimsizes(files) ; number of files
 
 ; Set up some basic plot resources
@@ -26,7 +27,7 @@ wwwres = True
 FirstTime = True
 if (FirstTime) then
    zmin = 0.
-   zmax = 3.
+   zmax = 12.
    nz = floattoint(zmax+1)
 end if
 ; Set some options here
@@ -57,7 +58,7 @@ do ifil=0,numfiles-1
    time = (filestr(22:23)+"_"+filestr(25:26))
    dbzres@TimeLabel = date + " " + filestr(22:23) + ":" + filestr(25:26)
 
-    wks = gsn_open_wks(type, "www_xsecback_d04_"+date+"_"+time)
+    wks = gsn_open_wks(type, "www_xback12km_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "www_cont_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "vectortest")
    
