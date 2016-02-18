@@ -6,8 +6,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 begin
 
 ; get list of files to read
-files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
-;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*02_[0-3]*_00")
 numfiles = dimsizes(files) ; number of files
 
 ; Set up some basic plot resources
@@ -18,10 +18,10 @@ plot = new(2, graphic)
 opts = True
 plane = new(4,float)
 
-lat0 = 39.5
-lon0 = -98.9
-lat1 = 38.25
-lon1 = -97.0
+lat0 = 39.75
+lon0 = -99.2
+lat1 = 39.5
+lon1 = -97.4
 
 rhres = True 
 FirstTime = True
@@ -58,7 +58,7 @@ do ifil=0,numfiles-1
    time = (filestr(22:23)+"_"+filestr(25:26))
    rhres@TimeLabel = date + " " + filestr(22:23) + ":" + filestr(25:26)
 
-    wks = gsn_open_wks(type, "rh_xsecnew_d04_"+date+"_"+time)
+    wks = gsn_open_wks(type, "rh_xsecnorth_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "rh_cont_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "rhtest")
    

@@ -5,8 +5,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 begin
 
 ; get list of files to read
-files = systemfunc("ls -1 " + "wrfout_d04*_0{2,3}_*_00")
-;files = systemfunc("ls -1 " + "wrfout_d04*_02_30_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*_0{2,3}_*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*_02_30_00")
 numfiles = dimsizes(files) ; number of files
 
 elev=1000.
@@ -21,11 +21,11 @@ y = 879
 ;x1lat1 = 37.6
 ;x1lon1 = -96.3
 
-;xsecback
-x1lat0 = 39.8
-x1lon0 = -99.4
-x1lat1 = 38.5
-x1lon1 = -97.3
+;xsecnorth
+x1lat0 = 39.75
+x1lon0 = -99.2
+x1lat1 = 39.5
+x1lon1 = -97.4
 
 ; Set up some basic plot resources
 dbz_cmap = read_colormap_file("radar")
@@ -65,7 +65,7 @@ do ifil=0,numfiles-1
    time = (filestr(22:23)+"_"+filestr(25:26))
    dbzres@TimeLabel = date + " " + filestr(22:23) + ":" + filestr(25:26)
 
-   wks = gsn_open_wks(type, "dbz_plansback_"+elev+"_d04_"+date+"_"+time)
+   wks = gsn_open_wks(type, "dbz_plansnorth_"+elev+"_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "dbz_cont_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "test")
    a=addfile(files(ifil)+".nc","r") ; Open next file in sequence
@@ -96,7 +96,7 @@ do ifil=0,numfiles-1
 ;   final_map = gsn_csm_vector_scalar_map_ce(wks,u10_interp,v10_interp,contour_dbz,True)
 ;   dum1      = gsn_add_polymarker(wks,final_map,364,624,polyres) 
 ;   final_map = gsn_contour(wks, dbz_interp, dbzres)
-   gsn_polymarker(wks,final_map,point(0),point(1),polyres)
+;   gsn_polymarker(wks,final_map,point(0),point(1),polyres)
 ;   gsn_polymarker(wks,final_map,point1(0),point1(1),polyres)
 ;   gsn_polymarker(wks,final_map,point2(0),point2(1),polyres)
    gsn_polyline(wks,final_map,x1xpoints,x1ypoints,lnres)
