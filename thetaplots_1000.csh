@@ -10,7 +10,7 @@
 #BSUB -e ncl_%J.err
 #BSUB -o ncl_%J.out
 
-ncl thetaplots.ncl 
+ncl thetaplots_1000.ncl 
 
 mv *.png /glade/p/work/bfay/images
 

@@ -5,7 +5,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 begin
 
 ; get list of files to read
-files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*02_[0-3]*_00")
 numfiles = dimsizes(files) ; number of files
 
 elev = 1000. ; altitude at which to plot plan views, in meters.
@@ -19,10 +20,10 @@ y = 879
 ;x1lat1 = 37.6
 ;x1lon1 = -96.3
 
-x1lat0 = 39.8
-x1lon0 = -99.4
-x1lat1 = 38.5
-x1lon1 = -97.3
+x1lat0 = 39.75
+x1lon0 = -99.2
+x1lat1 = 39.5
+x1lon1 = -97.4
 
 ; Set up some basic plot resources
 theta_cmap = read_colormap_file("NCV_jet")
@@ -61,7 +62,7 @@ do ifil=0,numfiles-1
    time = (filestr(22:23)+"_"+filestr(25:26))
    thetares@TimeLabel = date + " " + filestr(22:23) + ":" + filestr(25:26)
 
-   wks = gsn_open_wks(type, "theta_plansback_"+elev+"_d04_"+date+"_"+time)
+   wks = gsn_open_wks(type, "theta_plansnorth_"+elev+"_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "theta_cont_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "test")
    a=addfile(files(ifil)+".nc","r") ; Open next file in sequence
