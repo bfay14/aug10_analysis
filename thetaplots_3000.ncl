@@ -5,8 +5,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 begin
 
 ; get list of files to read
-files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
-;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*02_09_00")
 numfiles = dimsizes(files) ; number of files
 
 elev = 3000. ; altitude at which to plot plan views, in meters.

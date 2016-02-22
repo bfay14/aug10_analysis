@@ -7,8 +7,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 begin
 
 ; get list of files to read
-files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}*_00" )
-;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00" )
+;files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}*_00" )
+files = systemfunc("ls -1 " + "wrfout_d04*02_30_00" )
 numfiles = dimsizes(files) ; number of files
 
 elev = 1000. ; Height at which to plot data, in meters
@@ -70,7 +70,7 @@ do ifil=0,numfiles-1
    time = (filestr(22:23)+"_"+filestr(25:26))
    wwwres@TimeLabel = date + " " + filestr(22:23) + ":" + filestr(25:26)
 
-   wks = gsn_open_wks(type, "www_plansback_"+elev+"_04_"+date+"_"+time)
+   wks = gsn_open_wks(type, "www_plansno_"+elev+"_04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "www_cont_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "test")
    ; the next 3 lines prevent workspace memory from running out
@@ -111,8 +111,8 @@ do ifil=0,numfiles-1
      ; Create map, plot line/marker over it
      final_map =  wrf_map_overlays(a,wks,(/ contour_www,contour_dbz /),pltres,mapres)
 ;     final_map = wrf_map_overlays(a,wks,contour_www,True,True)
-     gsn_polymarker(wks,final_map,point(0),point(1),polyres) ; plots a marker at the point specified
-      gsn_polyline(wks,final_map,x1xpoints,x1ypoints,lnres) ; plots a line using start/end points specified
+;     gsn_polymarker(wks,final_map,point(0),point(1),polyres) ; plots a marker at the point specified
+;      gsn_polyline(wks,final_map,x1xpoints,x1ypoints,lnres) ; plots a line using start/end points specified
 ;     gsn_polyline(wks,final_map,x2xpoints,x2ypoints,lnres)
      frame(wks)
   end do
