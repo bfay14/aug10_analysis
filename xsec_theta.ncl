@@ -6,8 +6,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 begin
 
 ; get list of files to read
-;files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
-files = systemfunc("ls -1 " + "wrfout_d04*02_[0-3]*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*02_*_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
 numfiles = dimsizes(files) ; number of files
 
 ; Set up some basic plot resources
@@ -17,10 +17,10 @@ plot = new(2, graphic)
 opts = True
 plane = new(4,float)
 
-lat0 = 39.75
-lon0 = -99.2
-lat1 = 39.5
-lon1 = -97.4
+lat0 = 40.0
+lon0 = -98.5
+lat1 = 38.75
+lon1 = -98.5
 
 thetares = True 
 FirstTime = True
