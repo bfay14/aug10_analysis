@@ -4,7 +4,7 @@
 #BSUB -n 1
 #BSUB -R "span[ptile=1]"
 #BSUB -q regular
-#BSUB -W 06:00				# wallclock
+#BSUB -W 08:00				# wallclock
 #BSUB -J pplots_3000
 
 #BSUB -e ncl_%J.err
@@ -12,5 +12,5 @@
 
 ncl pplots_3000.ncl 
 
-mv *.png /glade/p/work/bfay/images
+mv *.png /glade/p/work/bfay/images/pres
 

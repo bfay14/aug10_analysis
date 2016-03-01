@@ -42,18 +42,18 @@ presres@NoTitles = False
 presres@cnFillOn = True
 presres@InitTime = False
 presres@Footer = False
-presres@cnFillPalette = pres_cmap
+;presres@cnFillPalette = pres_cmap
 presres@cnLevelSelectionMode = "ManualLevels" ; set equally spaced contours
 ;presres@cnLevels = ispan(898,906,1)
 ;presres@ContourParameters = (/898.,906.,1./)
 ;levels = ispan(898,906,1)
 ;colind = get_color_index(pres_cmap,levels,904)
 ;print(colind)
-presres@cnMinLevelValF = 900
-presres@cnMaxLevelValF = 906
+presres@cnMinLevelValF = 709
+presres@cnMaxLevelValF = 715
 presres@cnLevelSpacingF = 1
 ;presres@cnFillColors = (/ 2,15,30,40,50,65,75,100,115,127 /)
-;presres@gsnSpreadColors = True
+presres@gsnSpreadColors = True
 presres@gsnFrame = False
 
 ; Set resources for single 50 dBZ contour here
