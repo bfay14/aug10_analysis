@@ -34,7 +34,7 @@ endij   = (/1149.,362./)
 slope = (endij(1)-startij(1))/(endij(0)-startij(0))
 theta = atan(slope)
 
-zmax = 3.0
+zmax = 1.0
 ; Set some basic resources
   res = True
   res@MainTitle = "REAL-TIME WRF"
@@ -63,15 +63,15 @@ zz = wrf_user_intrp3d(z,z,"v",(/500,500/),90.,False)
        delete(zz)
        delete(b)
 
-p=a[:]->P(:,zspan,y-1,x-1)
+p=a[:]->P(:,zmax_pos,y-1,x-1)
 p=p/100.
-uwind = a[:]->U(:,zspan,y-1,x-1)
-vwind = a[:]->V(:,zspan,y-1,x-1) 
+uwind = a[:]->U(:,zmax_pos,y-1,x-1)
+vwind = a[:]->V(:,zmax_pos,y-1,x-1) 
 ;umag = sqrt((uwind*uwind)+(vwind*wvind))
 upar = uwind*cos(theta) + vwind*sin(theta)
 vpar = vwind*cos(theta) - uwind*sin(theta)
 upardt = dtrend(upar,False)
-vdt = dtrend(vwind,False)
+vdt = dtrend(upar,False)
 windpar = (uwind*cos(theta))+(vwind*sin(theta))
 windpardt = dtrend(windpar,False)
 pdt = dtrend(p,False)
@@ -139,9 +139,12 @@ pdt = dtrend(p,False)
   umagres@tiYAxisString = "Wind Speed (m/s)"
 ; umagres@tiMainString = "10 m Wind Speed (m/s)"
 ;print(windpardt)
-ccr = escorc(vdt(45:89),pdt(45:89))
-print("ccr = " + ccr)
+;ccr = escorc(vdt(45:89),pdt(45:89))
+;ccr = escorc(vdt,pdt)
+ccr = escorc(vdt(0:89),pdt(0:89))
 printVarSummary(upardt)
+print("ccr = " + ccr)
+print("zmax = " + zmax)
 ;ccr = escorc(upar,p)
 plot  = gsn_csm_xy2(wks,ispan(0,dimsizes(p)-1,1),vdt,pdt,umagres,slpres)
 ;  plot(1)  = gsn_csm_xy(wks,ispan(0,30,1),wvmr,qres)

@@ -19,7 +19,7 @@ stormMotion_x = 13.41
 stormMotion_y = -9.48
 
 ; Use storm-relative motion or absolute motion? 
-stormRelative = True
+stormRelative = False
 
 opts = True
 plane = new(4,float)
@@ -178,8 +178,7 @@ do ifil=0,numfiles-1
    contour_theta  = wrf_contour(a,wks,theta_plane(0:zspan,:),thetares)
    contour_theta2 = wrf_contour(a,wks,theta_plane(0:zmax_pos,:),thetares)
    contour_wind    = wrf_contour(a,wks,wind_plane(0:zspan,:),windres)
-;   vector         = wrf_vector(a,wks,vrot_plane,wind_plane,vres)
-    pltres = True
+;   vector         = wrf_vector(a,wks,vrot_plane,wind_plane,vres) pltres = True
     pltres@NoTitles = True
     pltres@tiMainString = ""
     pltres@gsnMaximize = True
