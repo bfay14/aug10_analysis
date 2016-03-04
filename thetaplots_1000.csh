@@ -12,5 +12,5 @@
 
 ncl thetaplots_1000.ncl 
 
-mv *.png /glade/p/work/bfay/images
+mv *.png /glade/p/work/bfay/images/theta
 

@@ -5,8 +5,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 begin
 
 ; get list of files to read
-files = systemfunc("ls -1 " + "wrfout_d04*02_*_00")
-;files = systemfunc("ls -1 " + "wrfout_d04*02_[0-3]*_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*02_*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*01_*_00")
 ;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
 numfiles = dimsizes(files) ; number of files
 

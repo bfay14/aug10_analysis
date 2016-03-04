@@ -17,10 +17,10 @@ plot = new(2, graphic)
 opts = True
 plane = new(4,float)
 
-lat0 = 40.0
-lon0 = -98.5
-lat1 = 38.75
-lon1 = -98.5
+lat0 = 39.8
+lon0 = -99.4
+lat1 = 38.5
+lon1 = -97.3
 
 thetares = True 
 FirstTime = True
@@ -79,6 +79,9 @@ do ifil=0,numfiles-1
    ; determine angle of cross section and compute wind component along line; plane array is 1x4:x0,y0,x1,y1
    slope = (plane(3)-plane(1))/(plane(2)-plane(0))
    angle = atan(slope)
+   print(angle)
+   angledeg = angle*(180/3.14159)
+   print(angledeg)
    urot = uwind*cos(angle) + vwind*sin(angle)
    vrot = vwind*cos(theta) - uwind*sin(angle)
    dbz_plane   = wrf_user_intrp3d(dbz,z,"v",plane,0.,opts)
