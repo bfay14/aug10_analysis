@@ -5,8 +5,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 begin
 
 ; get list of files to read
-;files = systemfunc("ls -1 " + "wrfout_d04*02_*_00")
-files = systemfunc("ls -1 " + "wrfout_d04*01_*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*02_*_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*01_*_00")
 ;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
 numfiles = dimsizes(files) ; number of files
 
@@ -21,10 +21,10 @@ y = 879
 ;x1lat1 = 37.6
 ;x1lon1 = -96.3
 
-x1lat0 = 40.0
-x1lon0 = -98.5
-x1lat1 = 38.75
-x1lon1 = -98.5
+x1lat0 = 39.5
+x1lon0 = -99.4
+x1lat1 = 38.0
+x1lon1 = -99.4
 
 ; Set up some basic plot resources
 theta_cmap = read_colormap_file("NCV_jet")
@@ -48,6 +48,18 @@ thetares@cnLevels = ispan(298,312,2)
 thetares@gsnSpreadColors = True
 thetares@gsnFrame = False
 
+; Set resources for single dbz contour
+
+dbzres = True
+dbzres@ContourParameters = (/50,90,40/)
+dbzres@Footer = False
+dbzres@InitTime = False
+dbzres@cnInfoLabelOn = False
+dbzres@cnFillOn = False
+dbzres@cnLineLabelsOn = False
+dbzres@cnLineColor = "Blue"
+dbzres@cnLineThicknessF = 3
+dbzres@gsnFrame = False
 polyres = True
 polyres@gsMarkerIndex = 16
 polyres@gsMarkerSizeF = 10
@@ -63,7 +75,7 @@ do ifil=0,numfiles-1
    time = (filestr(22:23)+"_"+filestr(25:26))
    thetares@TimeLabel = date + " " + filestr(22:23) + ":" + filestr(25:26)
 
-   wks = gsn_open_wks(type, "theta_plansperp_"+elev+"_d04_"+date+"_"+time)
+   wks = gsn_open_wks(type, "theta_planswarm_"+elev+"_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "theta_cont_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "test")
    a=addfile(files(ifil)+".nc","r") ; Open next file in sequence
@@ -78,19 +90,22 @@ do ifil=0,numfiles-1
 ;   x2xpoints = (/x2lon0,x2lon1/)
 ;   x2ypoints = (/x2lat0,x2lat1/)
    theta = wrf_user_getvar(a,"th",0)
+   dbz   = wrf_user_getvar(a,"REFL_10CM",0)
    z   = wrf_user_getvar(a,"z",0)
    u = wrf_user_getvar(a,"U",0)
    u_u = wrf_user_unstagger(u,u@stagger)
    v = wrf_user_getvar(a,"V",0)
    v_u = wrf_user_unstagger(v,v@stagger)
    theta_interp = wrf_user_intrp3d(theta,z,"h",elev,0.,False)
+   dbz_interp = wrf_user_intrp3d(dbz,z,"h",elev,0.,False)
    u10_interp = wrf_user_intrp3d(u_u,z,"h",elev,0.,False)
    v10_interp = wrf_user_intrp3d(v_u,z,"h",elev,0.,False)
    vector = wrf_vector(a,wks,u10_interp,v10_interp,vres)
    contour_theta = wrf_contour(a,wks,theta_interp,thetares)
+   contour_dbz = wrf_contour(a,wks,dbz_interp,dbzres)
 ;   mpres@gsnFrame = False
 ;   map = wrf_map(wks,a,True)
-   final_map =  wrf_map_overlays(a,wks,(/contour_theta,vector/),thetares,mpres)
+   final_map =  wrf_map_overlays(a,wks,(/contour_theta,contour_dbz,vector/),thetares,mpres)
 ;   final_map = gsn_csm_vector_scalar_map_ce(wks,u10_interp,v10_interp,contour_theta,True)
 ;   dum1      = gsn_add_polymarker(wks,final_map,364,624,polyres) 
 ;   final_map = gsn_contour(wks, theta_interp, thetares)
