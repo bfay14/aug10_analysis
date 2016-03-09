@@ -17,10 +17,10 @@ plot = new(2, graphic)
 opts = True
 plane = new(4,float)
 
-lat0 = 39.8
+lat0 = 39.5
 lon0 = -99.4
-lat1 = 38.5
-lon1 = -97.3
+lat1 = 38.0
+lon1 = -99.4
 
 thetares = True 
 FirstTime = True
@@ -51,7 +51,7 @@ do ifil=0,numfiles-1
    time = (filestr(22:23)+"_"+filestr(25:26))
    thetares@TimeLabel = date + " " + filestr(22:23) + ":" + filestr(25:26)
 
-    wks = gsn_open_wks(type, "theta_xsecnorth_d04_"+date+"_"+time)
+    wks = gsn_open_wks(type, "theta_xsecwarm_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "theta_cont_d04_"+date+"_"+time)
 ;   wks = gsn_open_wks(type, "thetatest")
    

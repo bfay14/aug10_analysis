@@ -21,7 +21,7 @@ stormMotion_y = -9.48
 ; Use storm-relative motion or absolute motion? 
 stormRelative = False
 
-opts = True
+opts = False
 plane = new(4,float)
 
 lat0 = 39.8
@@ -50,7 +50,7 @@ do ifil=0,numfiles-1
    if (stormRelative) then 
      wks = gsn_open_wks(type, "srwind_xsecback_d04_"+date+"_"+time)
    else
-     wks = gsn_open_wks(type, "wind_xsecback_d04_"+date+"_"+time)
+     wks = gsn_open_wks(type, "wind_xsecsouth_d04_"+date+"_"+time)
    end if
 ;   wks = gsn_open_wks(type, "vectortest")
    
@@ -93,18 +93,20 @@ do ifil=0,numfiles-1
      urot = uwind*cos(angle) + vwind*sin(angle)
      vrot = vwind*cos(angle) - uwind*sin(angle)
    end if
+    delete(plane)
+    plane = (/273,541/) ; Remove this and preceding line if using start/end points; this is the xsec pivot point
+    pivot = 127.8 ; Set to 0. if using start/end points for cross section
 ;   thsinglecontour = new((/100,253/),"float",getFillValue(theta))
-   dbz_plane   = wrf_user_intrp3d(dbz,z,"v",plane,0.,opts)
-   theta_plane = wrf_user_intrp3d(theta,z,"v",plane,0.,opts)
+   dbz_plane   = wrf_user_intrp3d(dbz,z,"v",plane,pivot,opts)
+   theta_plane = wrf_user_intrp3d(theta,z,"v",plane,pivot,opts)
    if (stormRelative) then
-     wind_plane  = wrf_user_intrp3d(sr_urot,z,"v",plane,0.,opts)
+     wind_plane  = wrf_user_intrp3d(sr_urot,z,"v",plane,pivot,opts)
    else
-     wind_plane  = wrf_user_intrp3d(urot,z,"v",plane,0.,opts)
+     wind_plane  = wrf_user_intrp3d(urot,z,"v",plane,pivot,opts)
    end if
    length = dimsizes(wind_plane)
-;   ter_plane = wrf_user_interp3d(ter,z,"v",plane,0.,opts)
     if (FirstTime) then 
-       zz = wrf_user_intrp3d(z,z,"v",plane,0.,opts)
+       zz = wrf_user_intrp3d(z,z,"v",plane,pivot,opts)
        b = ind(zz(:,0) .gt. zmax*1000. )
        zmax_pos = b(0)-1
        if (abs(zz(zmax_pos,0)-zmax*1000.) .lt. abs(zz(zmax_pos+1,0)-zmax*1000.) ) then
@@ -155,9 +157,9 @@ do ifil=0,numfiles-1
       windres@cnFillOn = True
       windres@cnFillPalette = wind_cmap
       windres@cnLevelSelectionMode = "ExplicitLevels"
-      windres@cnLevels = ispan(-24,16,4)
-      icol = span_color_indexes(wind_cmap(0:200,:),11)
-      windres@cnFillColors = icol 
+      windres@cnLevels = ispan(-20,20,4)
+     ; icol = span_color_indexes(wind_cmap(0:200,:),11)
+     ; windres@cnFillColors = icol 
 ;      windres@cnSpanFillPalette = True
       windres@pmLabelBarOrthogonalPosF = 0.005
       windres@pmLabelBarWidthF = 0.4
@@ -178,7 +180,8 @@ do ifil=0,numfiles-1
    contour_theta  = wrf_contour(a,wks,theta_plane(0:zspan,:),thetares)
    contour_theta2 = wrf_contour(a,wks,theta_plane(0:zmax_pos,:),thetares)
    contour_wind    = wrf_contour(a,wks,wind_plane(0:zspan,:),windres)
-;   vector         = wrf_vector(a,wks,vrot_plane,wind_plane,vres) pltres = True
+;   vector         = wrf_vector(a,wks,vrot_plane,wind_plane,vres) 
+    pltres = True
     pltres@NoTitles = True
     pltres@tiMainString = ""
     pltres@gsnMaximize = True

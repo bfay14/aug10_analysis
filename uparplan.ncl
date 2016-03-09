@@ -7,18 +7,22 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 begin
 
 ; get list of files to read
-files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
-;files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
+;files = systemfunc("ls -1 " + "wrfout_d04*0{2,3}_*_00")
+files = systemfunc("ls -1 " + "wrfout_d04*02_30_00")
 numfiles = dimsizes(files) ; number of files
 
 elev = 1000.
+; Start and end points of plane to use for parallel component calculation
+lat0 = 38.75 ;39.8
+lon0 = -99.5 ;-99.4
+lat1 = 37.9  ;38.5
+lon1 = -98.5 ;-97.3
 
-lat0 = 39.8
-lon0 = -99.4
-lat1 = 38.5
-lon1 = -97.3
-
-
+; Set these if the cross section to be drawn (xsec) does not match line-parallel component plane above
+xseclat0 = 38.75
+xseclon0 = -99.5
+xseclat1 = 37.9
+xseclon1 = -98.5
 FirstTime = True
 ; Set point to plot and get lat/lon for polymarker
 x = 513
@@ -85,6 +89,8 @@ do ifil=0,numfiles-1
 
    xpoints = (/lon0,lon1/)
    ypoints = (/lat0,lat1/)
+   xsecxpoints = (/xseclon0,xseclon1/)
+   xsecypoints = (/xseclat0,xseclat1/)
    ; Print time being worked on to screen
    times = wrf_user_getvar(a,"times",-1)
    print("Working on times: " + times)
@@ -109,7 +115,9 @@ do ifil=0,numfiles-1
      ; Create map, plot line/marker over it
      final_map =  wrf_map_overlays(a,wks,(/contour_upar,contour_dbz/),pltres,mpres)
      gsn_polymarker(wks,final_map,point(0),point(1),polyres) ; plots a marker at the point specified
-     gsn_polyline(wks,final_map,xpoints,ypoints,True) ; plots a line using start/end points specified
+;     gsn_polyline(wks,final_map,xpoints,ypoints,True) ; plots a line using start/end points specified
+     gsn_polyline(wks,final_map,xsecxpoints,xsecypoints,True) ; Only use this one if angle used to calculate parallel component does not match cross section line to be drawn
+     draw(final_map)
      frame(wks)
   end do
 end

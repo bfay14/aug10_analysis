@@ -6,7 +6,7 @@ begin
 
 ; get list of files to read
 ;files = systemfunc("ls -1 " + "wrfout_d04*_0{2,3}_*_00")
-files = systemfunc("ls -1 " + "wrfout_d04*_02_30_00")
+files = systemfunc("ls -1 " + "wrfout_d04*_01_*_00")
 numfiles = dimsizes(files) ; number of files
 
 elev=1000.
